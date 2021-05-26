@@ -49,7 +49,7 @@ class PlaybackController {
         self.chordThreshold = self.bounds.size.width * self.chordThresholdRatio
         
         let sortedPlayables = playables.sorted {
-            return $0.frame.midX > $1.frame.midX
+            return $0.frame.midX < $1.frame.midX
         }
         
         var playableChords = [[Playable]]()

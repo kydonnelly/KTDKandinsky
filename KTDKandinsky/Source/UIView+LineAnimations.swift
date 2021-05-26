@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol Wobbler: UIView {
+public protocol Wobbler {
     var wobble: CGFloat { get }
 }
 
@@ -31,6 +31,10 @@ extension Wobbler {
         width1 = width1 + widthOffset
         width2 = width1 + widthOffset
     }
+    
+}
+
+extension Wobbler where Self: UIView {
     
     public func wobbleIn(duration: TimeInterval = 0.2) {
         self.layer.removeAnimation(forKey: "wobble")

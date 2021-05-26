@@ -24,7 +24,7 @@ public enum Instrument: Int, CaseIterable {
     case tonal
     case voice
     
-    var schemes: [Scheme] {
+    public var schemes: [Scheme] {
         switch self {
         case .tonal:
             return [.electricbass, .strings, .marimba]

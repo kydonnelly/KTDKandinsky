@@ -38,7 +38,7 @@ public class PlaybackController {
     
     private var metronome: CADisplayLink?
     
-    init(playables: [Playable]) {
+    public init(playables: [Playable]) {
         guard !playables.isEmpty else {
             preconditionFailure("Guard against empty playables in caller")
         }
@@ -79,13 +79,13 @@ public class PlaybackController {
         }
     }
     
-    var metronomeMilliseconds: Double {
+    var metronomeSeconds: Double {
         switch self.chords.count {
-        case 2: return 500
-        case 3: return 443.333
-        case 4: return 361.500
-        case 5: return 333
-        default: return 308
+        case 2: return 0.500
+        case 3: return 0.443333
+        case 4: return 0.361500
+        case 5: return 0.333
+        default: return 0.308
         }
     }
     
@@ -112,7 +112,7 @@ public class PlaybackController {
             return nil
         }
         
-        let threshold = self.metronomeMilliseconds
+        let threshold = self.metronomeSeconds
         let startIndex = Int(from / threshold)
         let endIndex = Int(to / threshold)
         let range = startIndex..<endIndex

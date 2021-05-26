@@ -94,7 +94,7 @@ public class PlaybackController {
         self.metronome?.add(to: .main, forMode: .common)
     }
     
-    func stopMetronome() {
+    public func stopMetronome() {
         self.metronome?.remove(from: .main, forMode: .common)
         self.metronome?.invalidate()
         self.metronome = nil

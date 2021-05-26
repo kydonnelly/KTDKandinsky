@@ -19,7 +19,7 @@ extension Wobbler {
         return min + diff * 0.5 * CGFloat(sineShift)
     }
     
-    public func wobble(t: TimeInterval, dt: TimeInterval, widthIndex: Int, width1: inout CGFloat, width2: inout CGFloat, speed: CGFloat = 0.08, wavelength: CGFloat = 0.02) {
+    public func wobble(t: TimeInterval, dt: TimeInterval, widthIndex: Int, width1: inout CGFloat, width2: inout CGFloat, speed: CGFloat = 80.0, wavelength: CGFloat = 0.02) {
         precondition(widthIndex % 2 == 0, "Should update 2 indexes at a time")
         
         let offset = (CGFloat(widthIndex) + CGFloat(dt) * speed) * wavelength

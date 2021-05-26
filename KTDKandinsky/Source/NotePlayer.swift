@@ -75,7 +75,7 @@ public class NotePlayer {
             
             do {
                 let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-                player.numberOfLoops = 1
+                player.numberOfLoops = 0
                 self.notePlayers[note] = player
             } catch {
                 continue

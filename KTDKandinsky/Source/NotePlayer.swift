@@ -101,6 +101,8 @@ public class NotePlayer {
             return false
         }
         
+        player.stop()
+        player.currentTime = 0
         player.play()
         return true
     }

@@ -11,6 +11,9 @@ public enum Scheme: String {
     case electricbass
     case strings
     case marimba
+    case crashed
+    case mallety
+    case funk
     case dumguitar
     case laachoir
     case beebop
@@ -21,6 +24,7 @@ public enum Scheme: String {
 
 public enum Instrument: Int, CaseIterable {
     case percussion
+    case pluck
     case tonal
     case voice
     
@@ -30,6 +34,8 @@ public enum Instrument: Int, CaseIterable {
             return [.electricbass, .strings, .marimba]
         case .voice:
             return [.dumguitar, .laachoir, .beebop]
+        case .pluck:
+            return [.crashed, .mallety, .funk]
         case .percussion:
             return [.rockkit, .glock, .kit]
         }
@@ -40,6 +46,8 @@ public enum Instrument: Int, CaseIterable {
         case .tonal:
             return 8
         case .voice:
+            return 8
+        case .pluck:
             return 8
         case .percussion:
             return 6

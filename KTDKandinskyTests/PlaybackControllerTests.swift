@@ -40,7 +40,7 @@ class PlaybackControllerTests: XCTestCase {
     func test_playChords_negativeInterval() throws {
         // Setup
         let controller = PlaybackController(playables: [TestPlayable()])
-        let from: TimeInterval = 1
+        let from: TimeInterval = 0.1
         let to: TimeInterval = 0
         
         // Test
@@ -66,8 +66,8 @@ class PlaybackControllerTests: XCTestCase {
     func test_playChords_sameHit() throws {
         // Setup
         let controller = PlaybackController(playables: [TestPlayable()])
-        let from: TimeInterval = 1
-        let to: TimeInterval = 2
+        let from: TimeInterval = 0.01
+        let to: TimeInterval = 0.02
         
         // Test
         let result = controller.playChords(from: from, to: to)
@@ -80,8 +80,8 @@ class PlaybackControllerTests: XCTestCase {
         // Setup
         let playable = TestPlayable()
         let controller = PlaybackController(playables: [playable])
-        let from: TimeInterval = 0
-        let to: TimeInterval = 400
+        let from: TimeInterval = 0.0
+        let to: TimeInterval = 0.4
         
         // Test
         let result = controller.playChords(from: from, to: to)
@@ -97,8 +97,8 @@ class PlaybackControllerTests: XCTestCase {
                          TestPlayable(scheme: .laachoir),
                          TestPlayable(scheme: .beebop)]
         let controller = PlaybackController(playables: playables)
-        let from: TimeInterval = 0
-        let to: TimeInterval = 400
+        let from: TimeInterval = 0.0
+        let to: TimeInterval = 0.4
         
         // Test
         let result = controller.playChords(from: from, to: to)
@@ -117,7 +117,7 @@ class PlaybackControllerTests: XCTestCase {
                          TestPlayable(frame: CGRect(x: 0, y: 2, width: 0, height: 0), scheme: .beebop)]
         let controller = PlaybackController(playables: playables)
         let from: TimeInterval = 0
-        let to: TimeInterval = 400
+        let to: TimeInterval = 0.4
         
         // Test
         let result = controller.playChords(from: from, to: to)
@@ -134,12 +134,12 @@ class PlaybackControllerTests: XCTestCase {
         let playables = [TestPlayable(frame: CGRect(x: 0, y: 0, width: 0, height: 0), scheme: .dumguitar),
                          TestPlayable(frame: CGRect(x: 0, y: 1, width: 0, height: 0), scheme: .laachoir),
                          TestPlayable(frame: CGRect(x: 1, y: 2, width: 0, height: 0), scheme: .beebop),
-                         TestPlayable(frame: CGRect(x: 1, y: 4, width: 0, height: 0), scheme: .dumguitar),
+                         TestPlayable(frame: CGRect(x: 1, y: 4, width: 0, height: 0), scheme: .mallety, instrument: .pluck),
                          TestPlayable(frame: CGRect(x: 2, y: 1, width: 0, height: 0), scheme: .laachoir),
-                         TestPlayable(frame: CGRect(x: 2, y: 3, width: 0, height: 0), scheme: .beebop)]
+                         TestPlayable(frame: CGRect(x: 2, y: 3, width: 0, height: 0), scheme: .funk, instrument: .pluck)]
         let controller = PlaybackController(playables: playables)
-        let from: TimeInterval = 800
-        let to: TimeInterval = 1300
+        let from: TimeInterval = 0.8
+        let to: TimeInterval = 1.3
         
         // Test
         let result = controller.playChords(from: from, to: to)
@@ -152,6 +152,7 @@ class PlaybackControllerTests: XCTestCase {
         XCTAssertEqual(playables[3].playCount, 0)
         XCTAssertEqual(playables[4].playCount, 1)
         XCTAssertEqual(playables[5].playCount, 1)
+        waitForSound()
     }
     
 }

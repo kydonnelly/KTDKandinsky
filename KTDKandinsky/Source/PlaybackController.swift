@@ -13,6 +13,8 @@ protocol Playable {
     var frame: CGRect { get }
     var scheme: Scheme { get }
     var instrument: Instrument { get }
+    
+    func didPlay()
 }
 
 extension Playable {
@@ -31,6 +33,7 @@ class PlaybackController {
     
     private let bounds: CGRect
     private let chords: [Chord]
+    private let playables: [[Playable]]
     private let chordThreshold: CGFloat
     
     private var metronome: CADisplayLink?
@@ -68,6 +71,7 @@ class PlaybackController {
             playableChords.append([playable])
         }
         
+        self.playables = playableChords
         self.chords = playableChords.map { [bounds = self.bounds] in
             $0.map {
                 return Note(instrument: $0.instrument, scheme: $0.scheme, scale: $0.scale(rect: bounds))
@@ -119,8 +123,14 @@ class PlaybackController {
         // only play the latest chord
         let index = endIndex % self.chords.count
         let chord = self.chords[index]
+        let playables = self.playables[index]
+        
         chord.forEach {
             NotePlayer.shared.play(note: $0)
+        }
+        
+        playables.forEach {
+            $0.didPlay()
         }
         
         return range

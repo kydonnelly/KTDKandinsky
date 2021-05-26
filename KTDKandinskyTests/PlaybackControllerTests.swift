@@ -8,15 +8,21 @@
 import XCTest
 @testable import KTDKandinsky
 
-struct TestPlayable: Playable {
+class TestPlayable: Playable {
     var frame: CGRect
     var scheme: Scheme
     var instrument: Instrument
+    
+    var playCount: Int = 0
     
     init(frame: CGRect = .zero, scheme: Scheme = .dumguitar, instrument: Instrument = .voice) {
         self.frame = frame
         self.scheme = scheme
         self.instrument = instrument
+    }
+    
+    func didPlay() {
+        self.playCount += 1
     }
 }
 
@@ -72,7 +78,8 @@ class PlaybackControllerTests: XCTestCase {
     
     func test_playChords_acrossHit() throws {
         // Setup
-        let controller = PlaybackController(playables: [TestPlayable()])
+        let playable = TestPlayable()
+        let controller = PlaybackController(playables: [playable])
         let from: TimeInterval = 0
         let to: TimeInterval = 400
         
@@ -81,13 +88,15 @@ class PlaybackControllerTests: XCTestCase {
         
         // Verify
         XCTAssertEqual(result?.count, 1)
+        XCTAssertEqual(playable.playCount, 1)
     }
     
     func test_playChords_threeVocals() throws {
         // Setup
-        let controller = PlaybackController(playables: [TestPlayable(scheme: .dumguitar),
-                                                        TestPlayable(scheme: .laachoir),
-                                                        TestPlayable(scheme: .beebop)])
+        let playables = [TestPlayable(scheme: .dumguitar),
+                         TestPlayable(scheme: .laachoir),
+                         TestPlayable(scheme: .beebop)]
+        let controller = PlaybackController(playables: playables)
         let from: TimeInterval = 0
         let to: TimeInterval = 400
         
@@ -96,13 +105,17 @@ class PlaybackControllerTests: XCTestCase {
         
         // Verify
         XCTAssertEqual(result?.count, 1)
+        for playable in playables {
+            XCTAssertEqual(playable.playCount, 1)
+        }
     }
     
     func test_playChords_oneChordThreeScales() throws {
         // Setup
-        let controller = PlaybackController(playables: [TestPlayable(frame: CGRect(x: 0, y: 0, width: 0, height: 0), scheme: .dumguitar),
-                                                        TestPlayable(frame: CGRect(x: 0, y: 1, width: 0, height: 0), scheme: .laachoir),
-                                                        TestPlayable(frame: CGRect(x: 0, y: 2, width: 0, height: 0), scheme: .beebop)])
+        let playables = [TestPlayable(frame: CGRect(x: 0, y: 0, width: 0, height: 0), scheme: .dumguitar),
+                         TestPlayable(frame: CGRect(x: 0, y: 1, width: 0, height: 0), scheme: .laachoir),
+                         TestPlayable(frame: CGRect(x: 0, y: 2, width: 0, height: 0), scheme: .beebop)]
+        let controller = PlaybackController(playables: playables)
         let from: TimeInterval = 0
         let to: TimeInterval = 400
         
@@ -111,16 +124,20 @@ class PlaybackControllerTests: XCTestCase {
         
         // Verify
         XCTAssertEqual(result?.count, 1)
+        for playable in playables {
+            XCTAssertEqual(playable.playCount, 1)
+        }
     }
     
     func test_playChords_threeChordsTwoScales() throws {
         // Setup
-        let controller = PlaybackController(playables: [TestPlayable(frame: CGRect(x: 0, y: 0, width: 0, height: 0), scheme: .dumguitar),
-                                                        TestPlayable(frame: CGRect(x: 0, y: 1, width: 0, height: 0), scheme: .laachoir),
-                                                        TestPlayable(frame: CGRect(x: 1, y: 2, width: 0, height: 0), scheme: .beebop),
-                                                        TestPlayable(frame: CGRect(x: 1, y: 4, width: 0, height: 0), scheme: .dumguitar),
-                                                        TestPlayable(frame: CGRect(x: 2, y: 1, width: 0, height: 0), scheme: .laachoir),
-                                                        TestPlayable(frame: CGRect(x: 2, y: 3, width: 0, height: 0), scheme: .beebop)])
+        let playables = [TestPlayable(frame: CGRect(x: 0, y: 0, width: 0, height: 0), scheme: .dumguitar),
+                         TestPlayable(frame: CGRect(x: 0, y: 1, width: 0, height: 0), scheme: .laachoir),
+                         TestPlayable(frame: CGRect(x: 1, y: 2, width: 0, height: 0), scheme: .beebop),
+                         TestPlayable(frame: CGRect(x: 1, y: 4, width: 0, height: 0), scheme: .dumguitar),
+                         TestPlayable(frame: CGRect(x: 2, y: 1, width: 0, height: 0), scheme: .laachoir),
+                         TestPlayable(frame: CGRect(x: 2, y: 3, width: 0, height: 0), scheme: .beebop)]
+        let controller = PlaybackController(playables: playables)
         let from: TimeInterval = 800
         let to: TimeInterval = 1300
         
@@ -129,7 +146,12 @@ class PlaybackControllerTests: XCTestCase {
         
         // Verify
         XCTAssertEqual(result?.count, 1)
-        waitForSound()
+        XCTAssertEqual(playables[0].playCount, 0)
+        XCTAssertEqual(playables[1].playCount, 0)
+        XCTAssertEqual(playables[2].playCount, 0)
+        XCTAssertEqual(playables[3].playCount, 0)
+        XCTAssertEqual(playables[4].playCount, 1)
+        XCTAssertEqual(playables[5].playCount, 1)
     }
     
 }

@@ -9,12 +9,12 @@ import Foundation
 
 typealias Chord = [Note]
 
-protocol Playable {
+public protocol Playable {
     var frame: CGRect { get }
     var scheme: Scheme { get }
     var instrument: Instrument { get }
     
-    func didPlay()
+    func didPlay(beat: TimeInterval)
 }
 
 extension Playable {
@@ -27,7 +27,7 @@ extension Playable {
     }
 }
 
-class PlaybackController {
+public class PlaybackController {
     
     public var chordThresholdRatio: CGFloat = 0.07
     
@@ -89,7 +89,7 @@ class PlaybackController {
         }
     }
     
-    func startMetronome() {
+    public func startMetronome() {
         self.metronome = CADisplayLink(target: self, selector: #selector(hit(_:)))
         self.metronome?.add(to: .main, forMode: .common)
     }
@@ -130,7 +130,7 @@ class PlaybackController {
         }
         
         playables.forEach {
-            $0.didPlay()
+            $0.didPlay(beat: threshold)
         }
         
         return range

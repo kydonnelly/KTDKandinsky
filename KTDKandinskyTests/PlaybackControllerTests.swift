@@ -21,7 +21,7 @@ class TestPlayable: Playable {
         self.instrument = instrument
     }
     
-    func didPlay() {
+    func didPlay(beat: TimeInterval) {
         self.playCount += 1
     }
 }

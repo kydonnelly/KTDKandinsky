@@ -8,7 +8,7 @@
 import AVFoundation
 import Foundation
 
-struct Note: Hashable {
+public struct Note: Hashable {
     let instrument: Instrument
     let scheme: Scheme
     let scale: Int
@@ -25,7 +25,7 @@ struct Note: Hashable {
                   scale: scale)
     }
     
-    var soundFile: String {
+    public var soundFile: String {
         let scheme = self.scheme
         let instrument = self.instrument
         
@@ -50,9 +50,9 @@ struct Note: Hashable {
     }
 }
 
-class NotePlayer {
+public class NotePlayer {
     
-    static let shared = NotePlayer()
+    public static let shared = NotePlayer()
     
     var notePlayers: [Note: AVAudioPlayer]
     
@@ -66,31 +66,37 @@ class NotePlayer {
             return
         }
         
-        for instrument in Instrument.allCases {
-            for scheme in instrument.schemes {
-                for scale in 0..<instrument.numScales {
-                    let note = Note(instrument: instrument, scheme: scheme, scale: scale)
-                    
-                    let filename = note.soundFile
-                    let bundle = Bundle(for: Self.self)
-                    guard let url = bundle.url(forResource: filename, withExtension: note.fileExtension) else {
-                        continue
-                    }
-                    
-                    do {
-                        let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-                        player.numberOfLoops = 1
-                        self.notePlayers[note] = player
-                    } catch {
-                        continue
-                    }
-                }
+        for note in Self.allNotes() {
+            let filename = note.soundFile
+            let bundle = Bundle(for: Self.self)
+            guard let url = bundle.url(forResource: filename, withExtension: note.fileExtension) else {
+                continue
+            }
+            
+            do {
+                let player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
+                player.numberOfLoops = 1
+                self.notePlayers[note] = player
+            } catch {
+                continue
             }
         }
     }
     
+    public static func allNotes() -> [Note] {
+        var notes = [Note]()
+        for instrument in Instrument.allCases {
+            for scheme in instrument.schemes {
+                for scale in 0..<instrument.numScales {
+                    notes.append(Note(instrument: instrument, scheme: scheme, scale: scale))
+                }
+            }
+        }
+        return notes
+    }
+    
     @discardableResult
-    func play(note: Note) -> Bool {
+    public func play(note: Note) -> Bool {
         guard let player = self.notePlayers[note] else {
             return false
         }

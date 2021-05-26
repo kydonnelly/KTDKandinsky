@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Scheme: String {
+public enum Scheme: String {
     case electricbass
     case strings
     case marimba
@@ -19,7 +19,7 @@ enum Scheme: String {
     case kit
 }
 
-enum Instrument: Int, CaseIterable {
+public enum Instrument: Int, CaseIterable {
     case percussion
     case tonal
     case voice

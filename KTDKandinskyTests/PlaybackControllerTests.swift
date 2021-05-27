@@ -148,10 +148,10 @@ class PlaybackControllerTests: XCTestCase {
         XCTAssertEqual(result?.count, 1)
         XCTAssertEqual(playables[0].playCount, 0)
         XCTAssertEqual(playables[1].playCount, 0)
-        XCTAssertEqual(playables[2].playCount, 0)
-        XCTAssertEqual(playables[3].playCount, 0)
-        XCTAssertEqual(playables[4].playCount, 1)
-        XCTAssertEqual(playables[5].playCount, 1)
+        XCTAssertEqual(playables[2].playCount, 1)
+        XCTAssertEqual(playables[3].playCount, 1)
+        XCTAssertEqual(playables[4].playCount, 0)
+        XCTAssertEqual(playables[5].playCount, 0)
         waitForSound()
     }
     

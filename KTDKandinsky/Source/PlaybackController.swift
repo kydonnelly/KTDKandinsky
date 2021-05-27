@@ -116,21 +116,18 @@ public class PlaybackController {
         let startIndex = Int(from / threshold)
         let endIndex = Int(to / threshold)
         let range = startIndex..<endIndex
-        guard startIndex != endIndex else {
-            return range
-        }
-        
-        // only play the latest chord
-        let index = endIndex % self.chords.count
-        let chord = self.chords[index]
-        let playables = self.playables[index]
-        
-        chord.forEach {
-            NotePlayer.shared.play(note: $0)
-        }
-        
-        playables.forEach {
-            $0.didPlay(beat: threshold)
+        for i in startIndex..<endIndex {
+            let index = i % self.chords.count
+            let chord = self.chords[index]
+            let playables = self.playables[index]
+            
+            chord.forEach {
+                NotePlayer.shared.play(note: $0)
+            }
+            
+            playables.forEach {
+                $0.didPlay(beat: threshold)
+            }
         }
         
         return range

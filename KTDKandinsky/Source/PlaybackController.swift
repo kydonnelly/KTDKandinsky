@@ -36,6 +36,7 @@ public class PlaybackController {
     private let playables: [[Playable]]
     private let chordThreshold: CGFloat
     
+    private var beat: TimeInterval = 0
     private var metronome: CADisplayLink?
     private var metronomeSeconds: TimeInterval
     
@@ -97,6 +98,7 @@ public class PlaybackController {
     }
     
     public func startMetronome() {
+        self.beat = 0
         self.metronome = CADisplayLink(target: self, selector: #selector(hit(_:)))
         self.metronome?.add(to: .main, forMode: .common)
     }
@@ -108,9 +110,9 @@ public class PlaybackController {
     }
     
     @objc public func hit(_ link: CADisplayLink) {
-        let time = link.timestamp
-        let lastHit = time - link.duration
-        self.playChords(from: lastHit, to: time)
+        let lastBeat = self.beat
+        self.beat += link.duration
+        self.playChords(from: lastBeat, to: self.beat)
     }
     
     @discardableResult

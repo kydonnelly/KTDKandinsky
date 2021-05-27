@@ -37,17 +37,22 @@ public class PlaybackController {
     private let chordThreshold: CGFloat
     
     private var metronome: CADisplayLink?
+    private var metronomeSeconds: TimeInterval
     
-    public init(playables: [Playable]) {
+    public init(playables: [Playable], bounds: CGRect? = nil, metronomeSeconds: TimeInterval? = nil) {
         guard !playables.isEmpty else {
             preconditionFailure("Guard against empty playables in caller")
         }
         
-        let minX = playables.map { $0.frame.origin.x }.min()!
-        let minY = playables.map { $0.frame.origin.y }.min()!
-        let maxX = playables.map { $0.frame.origin.x + $0.frame.size.width }.max()!
-        let maxY = playables.map { $0.frame.origin.y + $0.frame.size.height }.max()!
-        self.bounds = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+        if let bounds = bounds {
+            self.bounds = bounds
+        } else {
+            let minX = playables.map { $0.frame.origin.x }.min()!
+            let minY = playables.map { $0.frame.origin.y }.min()!
+            let maxX = playables.map { $0.frame.origin.x + $0.frame.size.width }.max()!
+            let maxY = playables.map { $0.frame.origin.y + $0.frame.size.height }.max()!
+            self.bounds = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+        }
         
         self.chordThreshold = self.bounds.size.width * self.chordThresholdRatio
         
@@ -77,10 +82,12 @@ public class PlaybackController {
                 return Note(instrument: $0.instrument, scheme: $0.scheme, scale: $0.scale(rect: bounds))
             }
         }
+        
+        self.metronomeSeconds = metronomeSeconds ?? Self.defaultMetronome(numChords: playableChords.count)
     }
     
-    var metronomeSeconds: Double {
-        switch self.chords.count {
+    static func defaultMetronome(numChords: Int) -> Double {
+        switch numChords {
         case 2: return 0.500
         case 3: return 0.443333
         case 4: return 0.361500

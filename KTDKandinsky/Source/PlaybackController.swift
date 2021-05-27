@@ -22,7 +22,7 @@ extension Playable {
         guard rect.size.height > 0 else { return 0 }
         
         let numScales = self.instrument.numScales
-        let yRatio = (self.frame.origin.y - rect.origin.y) / rect.size.height
+        let yRatio = 1.0 - (self.frame.origin.y - rect.origin.y + 0.001) / rect.size.height
         return Int(CGFloat(numScales) * yRatio)
     }
 }

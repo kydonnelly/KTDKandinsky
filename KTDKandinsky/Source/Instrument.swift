@@ -20,6 +20,7 @@ public enum Scheme: String {
     case rockkit
     case glock
     case kit
+    case metal
 }
 
 public enum Instrument: Int, CaseIterable {
@@ -31,13 +32,13 @@ public enum Instrument: Int, CaseIterable {
     public var schemes: [Scheme] {
         switch self {
         case .tonal:
-            return [.electricbass, .strings, .marimba]
+            return [.electricbass, .strings, .marimba, .metal]
         case .voice:
             return [.dumguitar, .laachoir, .beebop]
         case .pluck:
-            return [.crashed, .mallety, .funk]
+            return [.crashed, .mallety, .funk, .metal]
         case .percussion:
-            return [.rockkit, .glock, .kit]
+            return [.rockkit, .glock, .kit, .metal]
         }
     }
     
